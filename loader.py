@@ -2,8 +2,11 @@ import os
 import requests
 import numpy as np
 import pandas as pd
+import data_cleaning as fonctions
+
 
 DATA_PATH = 'data/MMM_MMM_DAE.csv'
+
 
 def download_data(url, force_download=False, ):
     # Utility function to donwload data if it is not in disk
@@ -35,21 +38,17 @@ def load_formatted_data(data_fname:str) -> pd.DataFrame:
         encoding='latin-1'
         )
     
-    # df["nom"]=df["nom"].astype(str, errors='coerce')
-    # df["lat_coor1"]=df["lat_coor1"].astype(float, errors='coerce')
-    # df["long_coor1"]=df["long_coor1"].astype(float, errors='coerce')
-    # df["adr_num"]=df["adr_num"].astype(int, errors='coerce')
-    # df["adr_voie"]=df["adr_voie"].astype(str, errors='coerce')
-    # df["com_cp"]=df["com_cp"].astype(int, errors='coerce')
-    # df["com_nom"]=df["com_nom"].astype(str, errors='coerce')
-    # df["dermnt"]=df["dermnt"].astype(str, errors='coerce')  #a modif pour datetime
-    # df["freq_mnt"]=df["freq_mnt"].astype(str, errors='coerce') 
-    # df["tel1"]=df["tel1"].astype(str, errors='coerce')
-
-    print(df)
-
+    df["nom"]=df["nom"].astype(str, errors='ignore')
+    df["lat_coor1"]=df["lat_coor1"].astype(float, errors='ignore')
+    df["long_coor1"]=df["long_coor1"].astype(float, errors='ignore')
+    df["adr_num"]=df["adr_num"].astype(int, errors='ignore')
+    df["adr_voie"]=df["adr_voie"].astype(str, errors='ignore')
+    df["com_cp"]=df["com_cp"].astype(int, errors='ignore')
+    df["com_nom"]=df["com_nom"].astype(str, errors='ignore')
+    df["dermnt"]=df["dermnt"].astype(str, errors='ignore')  #a modif pour datetime
+    df["freq_mnt"]=df["freq_mnt"].astype(str, errors='ignore') 
+    df["tel1"]=df["tel1"].astype(str, errors='ignore')
     return df
-
 
 # once they are all done, call them in the general sanitizing function
 def sanitize_data(df:pd.DataFrame) -> pd.DataFrame:
@@ -73,7 +72,6 @@ def load_clean_data(df:pd.DataFrame)-> pd.DataFrame:
     df =(load_formatted_data(df))
     #        .pipe(sanitize_data)
     #        .pipe(frame_data))
-    print(df)
     return df
 
 
