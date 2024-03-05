@@ -28,7 +28,7 @@ def download_data(url, force_download=False, ):
 
 
 def load_formatted_data(data_fname:str) -> pd.DataFrame:
-    """ One function to read csv into a dataframe with appropriate types/formats.
+    """ One function to read csv into a df with appropriate types/formats.
         Note: read only pertinent columns, ignore the others.
     """
     columns=["nom","lat_coor1","long_coor1","adr_num","adr_voie","com_cp","com_nom","dermnt","freq_mnt","tel1"] 
@@ -53,8 +53,35 @@ def load_formatted_data(data_fname:str) -> pd.DataFrame:
 # once they are all done, call them in the general sanitizing function
 def sanitize_data(df:pd.DataFrame) -> pd.DataFrame:
     """ One function to do all sanitizing"""
-    
+    columns=["nom","lat_coor1","long_coor1","adr_num","adr_voie","com_cp","com_nom","dermnt","freq_mnt","tel1"]   
+    columns_float=["lat_coor1","long_coor1","adr_num","com_cp"]
+    for col in columns:
+        df[col]=df[col].apply(fonctions.remplace_if_na)
 
+    for col in columns_float:    
+        df[col]=df[col].apply(fonctions.remplace_if_nan)
+
+    df["freq_mnt"]=df["freq_mnt"].apply(fonctions.remplace_frq)
+
+
+    df["com_cp"]=df["com_cp"].apply(fonctions.remplace_if_nan)
+    df["long_coor1"]=df["long_coor1"].apply(fonctions.remplace_if_nan)
+    df["lat_coor1"]=df["lat_coor1"].apply(fonctions.remplace_if_nan)
+    df["adr_num"]=df["adr_num"].apply(fonctions.remplace_if_nan)
+
+    df['adr_num']=df['adr_num'].apply(fonctions.replace_adress)
+    df['adr_voie']=df['adr_voie'].apply(fonctions.replace_adress)
+
+    df['Adresse'] = df['adr_num'].astype(str) + " " + df['adr_voie'].astype(str) + ", " + df['com_cp'].astype(str) + ", " + df['com_nom'].astype(str)
+    # df['Adresse']=df['Adresse'].apply(replace_adress)
+    df=df.drop('adr_num',axis=1)
+    df=df.drop('adr_voie',axis=1)
+    df=df.drop('com_cp',axis=1)
+    df=df.drop('com_nom',axis=1)
+    df["nom"]=df["nom"].str.upper()
+
+    df['dermnt']=pd.to_datetime(df['dermnt'],errors='coerce')
+    df['dermnt']=df['dermnt'].apply(fonctions.ValidateDate)
     return df
 
 
@@ -68,7 +95,7 @@ def frame_data(df:pd.DataFrame) -> pd.DataFrame:
 
 # once they are all done, call them in the general clean loading function
 def load_clean_data(df:pd.DataFrame)-> pd.DataFrame:
-    """one function to run it all and return a clean dataframe"""
+    """one function to run it all and return a clean df"""
     df =(load_formatted_data(df))
     #        .pipe(sanitize_data)
     #        .pipe(frame_data))
