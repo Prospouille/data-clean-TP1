@@ -35,16 +35,16 @@ def load_formatted_data(data_fname:str) -> pd.DataFrame:
         encoding='latin-1'
         )
     
-    df["nom"]=df["nom"].astype(str, errors='coerce')
-    df["lat_coor1"]=df["lat_coor1"].astype(float, errors='coerce')
-    df["long_coor1"]=df["long_coor1"].astype(float, errors='coerce')
-    df["adr_num"]=df["adr_num"].astype(int, errors='coerce')
-    df["adr_voie"]=df["adr_voie"].astype(str, errors='coerce')
-    df["com_cp"]=df["com_cp"].astype(int, errors='coerce')
-    df["com_nom"]=df["com_nom"].astype(str, errors='coerce')
-    df["dermnt"]=df["dermnt"].astype(str, errors='coerce')  #a modif pour datetime
-    df["freq_mnt"]=df["freq_mnt"].astype(str, errors='coerce') 
-    df["tel1"]=df["tel1"].astype(str, errors='coerce')
+    # df["nom"]=df["nom"].astype(str, errors='coerce')
+    # df["lat_coor1"]=df["lat_coor1"].astype(float, errors='coerce')
+    # df["long_coor1"]=df["long_coor1"].astype(float, errors='coerce')
+    # df["adr_num"]=df["adr_num"].astype(int, errors='coerce')
+    # df["adr_voie"]=df["adr_voie"].astype(str, errors='coerce')
+    # df["com_cp"]=df["com_cp"].astype(int, errors='coerce')
+    # df["com_nom"]=df["com_nom"].astype(str, errors='coerce')
+    # df["dermnt"]=df["dermnt"].astype(str, errors='coerce')  #a modif pour datetime
+    # df["freq_mnt"]=df["freq_mnt"].astype(str, errors='coerce') 
+    # df["tel1"]=df["tel1"].astype(str, errors='coerce')
 
     print(df)
 
@@ -70,10 +70,10 @@ def frame_data(df:pd.DataFrame) -> pd.DataFrame:
 # once they are all done, call them in the general clean loading function
 def load_clean_data(df:pd.DataFrame)-> pd.DataFrame:
     """one function to run it all and return a clean dataframe"""
-    # df = (df.pipe(load_formatted_data)
-    #       .pipe(sanitize_data)
-    #       .pipe(frame_data)
-    # )
+    df =(load_formatted_data(df))
+    #        .pipe(sanitize_data)
+    #        .pipe(frame_data))
+    print(df)
     return df
 
 
