@@ -82,23 +82,27 @@ def sanitize_data(df:pd.DataFrame) -> pd.DataFrame:
 
     df['dermnt']=pd.to_datetime(df['dermnt'],errors='coerce')
     df['dermnt']=df['dermnt'].apply(fonctions.ValidateDate)
+
+    #Commmand to put the name column with capital letters
+    df["nom"]=df["nom"].str.upper()
     return df
 
 
 # Define a framing function
 def frame_data(df:pd.DataFrame) -> pd.DataFrame:
     """ One function all framing (column renaming, column merge)"""
-    df.rename(...)
-    ...
+    
+    # df.rename(...)
+    # ...
     return df
 
 
 # once they are all done, call them in the general clean loading function
 def load_clean_data(df:pd.DataFrame)-> pd.DataFrame:
     """one function to run it all and return a clean df"""
-    df =(load_formatted_data(df))
-    #        .pipe(sanitize_data)
-    #        .pipe(frame_data))
+    df =(load_formatted_data(df)
+           .pipe(sanitize_data)
+           .pipe(frame_data))
     return df
 
 

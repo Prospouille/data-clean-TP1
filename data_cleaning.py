@@ -5,8 +5,8 @@ import numpy as np
 import datetime
 
 def remplace_if_nan(cell):
-    if cell != pd.NA and isinstance(cell, (float, int)): 
-        print(cell)       
+    if pd.notna(cell) and isinstance(cell, (float, int)): 
+        #print(cell)       
         return np.nan
     return cell
 
@@ -16,8 +16,8 @@ def remplace_if_na(cell):
     return cell
 
 def remplace_frq(cell):
-    print(cell)
-    if cell != pd.NA:
+    #print(cell)
+    if pd.notna(cell):
         if cell.lower()=="tous les ans":
             return "annuel"
         elif cell.lower()=="tous les mois":
@@ -42,7 +42,7 @@ def ValidateDate(cell_date):
     return cell_date
 
 def replace_adress(cell):
-    if cell != pd.NA:
+    if pd.notna(cell):
         list=cell.split(" ")
         for word in list:
             if word == "Montpellier" or word =="34000" or word =="34070" or word =="34090":
@@ -52,9 +52,17 @@ def replace_adress(cell):
 def remplace_if_notadate(cell):
     pass
 
+
+def telephone(cell):
+    cell=list(cell)
+    if cell[0]!="+":
+        cell.insert(0,'+')
+    
+    
+
 # type_cols={"nom":str,"lat_coor1":str,"long_coor1":str,"adr_num":str,"adr_voie":str,"com_cp":str,"com_nom":str,"freq_mnt":str,"tel1":str}
-# columns=["nom","lat_coor1","long_coor1","adr_num","adr_voie","com_cp","com_nom","dermnt","freq_mnt","tel1"]   
-# columns_float=["lat_coor1","long_coor1","adr_num","com_cp"]
+columns=["nom","lat_coor1","long_coor1","adr_num","adr_voie","com_cp","com_nom","dermnt","freq_mnt","tel1"]   
+columns_float=["lat_coor1","long_coor1","adr_num","com_cp"]
 
 # dataframe=pd.read_csv("C:/Users/Le Cornec/Desktop/data_cleaning/MMM_MMM_DAE.csv", sep=",", usecols=columns,dtype=type_cols)
 
@@ -89,10 +97,10 @@ def remplace_if_notadate(cell):
 # dataframe['dermnt']=pd.to_datetime(dataframe['dermnt'],errors='coerce')
 # dataframe['dermnt']=dataframe['dermnt'].apply(ValidateDate)
 
-# dataframe["freq_mnt"]=dataframe["freq_mnt"].replace("Tous les ans", "tous les ans")
-# dataframe["freq_mnt"]=dataframe["freq_mnt"].replace("tous les ans", "annuel")
+## dataframe["freq_mnt"]=dataframe["freq_mnt"].replace("Tous les ans", "tous les ans")
+## dataframe["freq_mnt"]=dataframe["freq_mnt"].replace("tous les ans", "annuel")
 
-# print(len(dataframe["lat_coor1"][1]))
+##  print(len(dataframe["lat_coor1"][1]))
 
 
 
