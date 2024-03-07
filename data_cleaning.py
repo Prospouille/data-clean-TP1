@@ -54,9 +54,11 @@ def remplace_if_notadate(cell):
 
 
 def telephone(cell):
-    cell=list(cell)
-    if cell[0]!="+":
-        cell.insert(0,'+')
+    if pd.notna(cell):
+        
+        if cell[0]!="+":
+            cell = '+' + cell
+    return cell
     
     
 
