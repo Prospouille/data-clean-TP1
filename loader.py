@@ -53,7 +53,28 @@ def load_formatted_data(data_fname:str) -> pd.DataFrame:
     df["dermnt"]=df["dermnt"].astype(str, errors='ignore')  #a modif pour datetime
     df["freq_mnt"]=df["freq_mnt"].astype(str, errors='ignore') 
     df["tel1"]=df["tel1"].astype(str, errors='ignore')
+
+
+
+    #If the adress number and the adresse voie are not correct, we modify it
+    df['adr_num']=df['adr_num'].apply(fonctions.replace_adress)
+    df['adr_voie']=df['adr_voie'].apply(fonctions.replace_adress)
+
+
+    #Commmand to put the name column with capital letters in the first position of each word
+    df["nom"]=df['nom'].apply(fonctions.ValidateName)
+
+    #Commmand to put the address column with capital letters in the first position of each word
+    df["adr_voie"]=df['adr_voie'].apply(fonctions.ValidateName)
+
+    #Command to set the type of the column as a datetime, and if there is a problem, we put NA with coerce
+    df['dermnt']=pd.to_datetime(df['dermnt'],errors='coerce')
+
+    #We check that the date is valid
+    df['dermnt']=df['dermnt'].apply(fonctions.ValidateDate)
+
     return df
+
 
 # once they are all done, call them in the general sanitizing function
 def sanitize_data(df:pd.DataFrame) -> pd.DataFrame:
@@ -72,24 +93,7 @@ def sanitize_data(df:pd.DataFrame) -> pd.DataFrame:
 
     #We check if the frequency is well set
     df["freq_mnt"]=df["freq_mnt"].apply(fonctions.remplace_frq)
-
-    #If the adress number and the adresse voie are not correct, we modify it
-    df['adr_num']=df['adr_num'].apply(fonctions.replace_adress)
-    df['adr_voie']=df['adr_voie'].apply(fonctions.replace_adress)
-
     
-
-    #Commmand to put the name column with capital letters in the first position of each word
-    df["nom"]=df['nom'].apply(fonctions.ValidateName)
-
-    #Commmand to put the address column with capital letters in the first position of each word
-    df["adr_voie"]=df['adr_voie'].apply(fonctions.ValidateName)
-
-    #Command to set the type of the column as a datetime, and if there is a problem, we put NA with coerce
-    df['dermnt']=pd.to_datetime(df['dermnt'],errors='coerce')
-
-    #We check that the date is valid
-    df['dermnt']=df['dermnt'].apply(fonctions.ValidateDate)
 
     #We add a '+' at the first position of the number if there is not one yet, and we add a space between +33 and 4
     df['tel1']=df['tel1'].apply(fonctions.telephone)
