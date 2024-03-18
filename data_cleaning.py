@@ -58,6 +58,7 @@ def telephone(cell):
         
         if cell[0]!="+":
             cell = '+' + cell
+        cell=cell[:3] + " " + cell[3:]
     return cell
     
     

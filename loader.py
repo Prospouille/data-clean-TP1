@@ -8,6 +8,8 @@ import data_cleaning as fonctions
 DATA_PATH = 'data/MMM_MMM_DAE.csv'
 
 
+
+
 def download_data(url, force_download=False, ):
     # Utility function to donwload data if it is not in disk
     data_path = os.path.join('data', os.path.basename(url.split('?')[0]))
@@ -70,10 +72,6 @@ def sanitize_data(df:pd.DataFrame) -> pd.DataFrame:
     #We check if the frequency is well set
     df["freq_mnt"]=df["freq_mnt"].apply(fonctions.remplace_frq)
 
-
-
-
-
     #If the adress number and the adresse voie are not correct, we modify it
     df['adr_num']=df['adr_num'].apply(fonctions.replace_adress)
     df['adr_voie']=df['adr_voie'].apply(fonctions.replace_adress)
@@ -91,6 +89,8 @@ def sanitize_data(df:pd.DataFrame) -> pd.DataFrame:
 
     #We add a '+' at the first position of the number if there is not one yet
     df['tel1']=df['tel1'].apply(fonctions.telephone)
+
+
 
     return df
 
@@ -116,7 +116,6 @@ def frame_data(df:pd.DataFrame) -> pd.DataFrame:
     df.rename(columns={'tel1': 'Téléphone'}, inplace=True)
     df.rename(columns={'freq_mnt': 'Fréquence de maintenance'}, inplace=True)
     df.rename(columns={'dermnt': 'Date de dernière maintenance'}, inplace=True)
-    df.rename(columns={'tel1': 'Téléphone'}, inplace=True)
 
 
     return df
@@ -136,4 +135,11 @@ def load_clean_data(df:pd.DataFrame)-> pd.DataFrame:
 if __name__ == '__main__':
     #We launch the process
     df=load_clean_data(download_data("https://data.montpellier3m.fr/sites/default/files/ressources/MMM_MMM_DAE.csv"))
-    print(df.head())
+    
+    print(df["Intitulé"].head(20))
+    print(df["Latitude"].head(20))
+    print(df["Longitude"].head(20))
+    print(df["Téléphone"].head(20))
+    print(df["Fréquence de maintenance"].head(20))
+    print(df["Date de dernière maintenance"].head(20))
+    
