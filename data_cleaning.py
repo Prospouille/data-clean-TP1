@@ -51,7 +51,7 @@ def ValidateName(cell_name):
                 liste[letter] = liste[letter].lower()
             liste[0]=liste[0].upper()
             for letter in range (len(liste)-1):
-                if liste[letter]== " ":
+                if liste[letter]== " " or liste[letter]=='"':
                     liste[letter + 1] = liste[letter + 1].upper()
             cell_name= ''.join(liste)
     return cell_name
@@ -70,7 +70,7 @@ def suppr_space(cell):
             liste=liste[1:]
         if liste[-1]==" ":
             liste=liste[:-1]
-        for i in range(len(liste)-2):
+        for i in range(len(liste)-1):
 
             if liste[i]==" " and liste[i+1]== " ":
                 liste=liste[:i] + liste[i:]
