@@ -97,12 +97,11 @@ def sanitize_data(df:pd.DataFrame) -> pd.DataFrame:
 
 
 
-
+    #For each column, we delete the spaces when we dont need it 
     df["freq_mnt"]=df["freq_mnt"].apply(fonctions.suppr_space)
     df['adr_num']=df['adr_num'].apply(fonctions.suppr_space)
     df['adr_voie']=df['adr_voie'].apply(fonctions.suppr_space)
     df["nom"]=df['nom'].apply(fonctions.suppr_space)
-    df['dermnt']=df['dermnt'].apply(fonctions.suppr_space)
     df['tel1']=df['tel1'].apply(fonctions.suppr_space)
 
     return df

@@ -35,6 +35,12 @@ def remplace_frq(cell):
         
     return cell
 
+def Validate_Com_Nom(cell):
+    if pd.notna(cell): 
+        cell= cell.lower().capitalize()
+    return cell
+
+
 def ValidateName(cell_name):
     if pd.notna(cell_name):
         if "montpellier" in cell_name.lower():
@@ -61,14 +67,13 @@ def suppr_space(cell):
     if pd.notna(cell):
         liste=list(cell)
         if liste[0]==" ":
-            liste=liste.pop(0)
+            liste=liste[1:]
         if liste[-1]==" ":
-            liste=liste.pop(-1)
-        print(liste)
-        print(len(liste))
+            liste=liste[:-1]
         for i in range(len(liste)-2):
+
             if liste[i]==" " and liste[i+1]== " ":
-                liste=liste.pop(i)
+                liste=liste[:i] + liste[i:]
     return cell
     
 
