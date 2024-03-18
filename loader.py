@@ -40,6 +40,7 @@ def load_formatted_data(data_fname:str) -> pd.DataFrame:
         usecols=columns,
         encoding='latin-1'
         )
+
     
     #We define the types for each column, if there is an error, we ignore it to continue our formatting
     df["nom"]=df["nom"].astype(str, errors='ignore')
@@ -79,7 +80,7 @@ def sanitize_data(df:pd.DataFrame) -> pd.DataFrame:
     
 
     #Commmand to put the name column with capital letters
-    df["nom"]=df["nom"].str.upper()
+    df["nom"]=df['nom'].apply(fonctions.ValidateName)
 
     #Command to set the type of the column as a datetime, and if there is a problem, we put NA with coerce
     df['dermnt']=pd.to_datetime(df['dermnt'],errors='coerce')
@@ -87,10 +88,22 @@ def sanitize_data(df:pd.DataFrame) -> pd.DataFrame:
     #We check that the date is valid
     df['dermnt']=df['dermnt'].apply(fonctions.ValidateDate)
 
-    #We add a '+' at the first position of the number if there is not one yet
+    #We add a '+' at the first position of the number if there is not one yet, and we add a space between +33 and 4
     df['tel1']=df['tel1'].apply(fonctions.telephone)
 
 
+    
+
+
+
+
+
+    df["freq_mnt"]=df["freq_mnt"].apply(fonctions.suppr_space)
+    df['adr_num']=df['adr_num'].apply(fonctions.suppr_space)
+    df['adr_voie']=df['adr_voie'].apply(fonctions.suppr_space)
+    df["nom"]=df['nom'].apply(fonctions.suppr_space)
+    df['dermnt']=df['dermnt'].apply(fonctions.suppr_space)
+    df['tel1']=df['tel1'].apply(fonctions.suppr_space)
 
     return df
 
@@ -142,4 +155,4 @@ if __name__ == '__main__':
     print(df["Téléphone"].head(20))
     print(df["Fréquence de maintenance"].head(20))
     print(df["Date de dernière maintenance"].head(20))
-    
+    print(df["Adresse"].head(20))

@@ -19,27 +19,61 @@ def remplace_frq(cell):
     #print(cell)
     if pd.notna(cell):
         if cell.lower()=="tous les ans":
-            return "annuel"
+            return "Annuel"
         elif cell.lower()=="tous les mois":
-            return "mensuel"
+            return "Mensuel"
         elif cell.lower()=="tous les jours":
-            return "quotidien"
+            return "Quotidien"
         elif cell.lower()=="toutes les semaines":
-            return "hebdomadaire"
+            return "Hebdomadaire"
         elif cell.lower()=="tous les trimestres":
-            return "trimestrielle"
+            return "Trimestrielle"
         elif cell.lower()=="tous les semestres":
-            return "semestrielle"
+            return "Semestrielle"
         else:
             return pd.NA
         
     return cell
 
+def ValidateName(cell_name):
+    if pd.notna(cell_name):
+        if "montpellier" in cell_name.lower():
+            return pd.NA
+        else: 
+            liste=list(cell_name)
+            for letter in range (len(liste)):
+                liste[letter] = liste[letter].lower()
+            liste[0]=liste[0].upper()
+            for letter in range (len(liste)-1):
+                if liste[letter]== " ":
+                    liste[letter + 1] = liste[letter + 1].upper()
+            cell_name= ''.join(liste)
+    return cell_name
+
 def ValidateDate(cell_date):
     if not isinstance(cell_date,pd.Timestamp):
-       
         return pd.NA
+    else:
+        cell_date = cell_date.date()
     return cell_date
+
+def suppr_space(cell):
+    if pd.notna(cell):
+        liste=list(cell)
+        if liste[0]==" ":
+            liste=liste.pop(0)
+        if liste[-1]==" ":
+            liste=liste.pop(-1)
+        print(liste)
+        print(len(liste))
+        for i in range(len(liste)-2):
+            if liste[i]==" " and liste[i+1]== " ":
+                liste=liste.pop(i)
+    return cell
+    
+
+    
+
 
 def replace_adress(cell):
     if pd.notna(cell):
