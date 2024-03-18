@@ -8,6 +8,8 @@ import data_cleaning as fonctions
 DATA_PATH = 'data/MMM_MMM_DAE.csv'
 
 
+
+
 def download_data(url, force_download=False, ):
     # Utility function to donwload data if it is not in disk
     data_path = os.path.join('data', os.path.basename(url.split('?')[0]))
@@ -38,6 +40,7 @@ def load_formatted_data(data_fname:str) -> pd.DataFrame:
         usecols=columns,
         encoding='latin-1'
         )
+
     
     #We define the types for each column, if there is an error, we ignore it to continue our formatting
     df["nom"]=df["nom"].astype(str, errors='ignore')
@@ -45,7 +48,7 @@ def load_formatted_data(data_fname:str) -> pd.DataFrame:
     df["long_coor1"]=df["long_coor1"].astype(float, errors='ignore')
     df["adr_num"]=df["adr_num"].astype(int, errors='ignore')
     df["adr_voie"]=df["adr_voie"].astype(str, errors='ignore')
-    df["com_cp"]=df["com_cp"].astype(int, errors='ignore')
+    df["com_cp"]=df["com_cp"].astype(str, errors='ignore')
     df["com_nom"]=df["com_nom"].astype(str, errors='ignore')
     df["dermnt"]=df["dermnt"].astype(str, errors='ignore')  #a modif pour datetime
     df["freq_mnt"]=df["freq_mnt"].astype(str, errors='ignore') 
@@ -70,18 +73,17 @@ def sanitize_data(df:pd.DataFrame) -> pd.DataFrame:
     #We check if the frequency is well set
     df["freq_mnt"]=df["freq_mnt"].apply(fonctions.remplace_frq)
 
-
-
-
-
     #If the adress number and the adresse voie are not correct, we modify it
     df['adr_num']=df['adr_num'].apply(fonctions.replace_adress)
     df['adr_voie']=df['adr_voie'].apply(fonctions.replace_adress)
 
     
 
-    #Commmand to put the name column with capital letters
-    df["nom"]=df["nom"].str.upper()
+    #Commmand to put the name column with capital letters in the first position of each word
+    df["nom"]=df['nom'].apply(fonctions.ValidateName)
+
+    #Commmand to put the address column with capital letters in the first position of each word
+    df["adr_voie"]=df['adr_voie'].apply(fonctions.ValidateName)
 
     #Command to set the type of the column as a datetime, and if there is a problem, we put NA with coerce
     df['dermnt']=pd.to_datetime(df['dermnt'],errors='coerce')
@@ -89,8 +91,15 @@ def sanitize_data(df:pd.DataFrame) -> pd.DataFrame:
     #We check that the date is valid
     df['dermnt']=df['dermnt'].apply(fonctions.ValidateDate)
 
-    #We add a '+' at the first position of the number if there is not one yet
+    #We add a '+' at the first position of the number if there is not one yet, and we add a space between +33 and 4
     df['tel1']=df['tel1'].apply(fonctions.telephone)
+
+    #For each column, we delete the spaces when we dont need it 
+    df["freq_mnt"]=df["freq_mnt"].apply(fonctions.suppr_space)
+    df['adr_num']=df['adr_num'].apply(fonctions.suppr_space)
+    df['adr_voie']=df['adr_voie'].apply(fonctions.suppr_space)
+    df["nom"]=df['nom'].apply(fonctions.suppr_space)
+    df['tel1']=df['tel1'].apply(fonctions.suppr_space)
 
     return df
 
@@ -116,9 +125,6 @@ def frame_data(df:pd.DataFrame) -> pd.DataFrame:
     df.rename(columns={'tel1': 'Téléphone'}, inplace=True)
     df.rename(columns={'freq_mnt': 'Fréquence de maintenance'}, inplace=True)
     df.rename(columns={'dermnt': 'Date de dernière maintenance'}, inplace=True)
-    df.rename(columns={'tel1': 'Téléphone'}, inplace=True)
-
-
     return df
 
 
@@ -136,4 +142,12 @@ def load_clean_data(df:pd.DataFrame)-> pd.DataFrame:
 if __name__ == '__main__':
     #We launch the process
     df=load_clean_data(download_data("https://data.montpellier3m.fr/sites/default/files/ressources/MMM_MMM_DAE.csv"))
-    print(df.head())
+    
+    print(df["Intitulé"].head(20))
+    print(df["Latitude"].head(20))
+    print(df["Longitude"].head(20))
+    print(df["Téléphone"].head(20))
+    print(df["Fréquence de maintenance"].head(20))
+    print(df["Date de dernière maintenance"].head(20))
+    print(df["Adresse"].head(50))
+    print(df.head(50))
