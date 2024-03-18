@@ -1,5 +1,6 @@
 import pytest
 import pandas as pd
+import numpy as np
 
 # This script contains tests for the cleaning functions and should be
 # completed by you
@@ -73,7 +74,7 @@ def sample_formatted() -> pd.DataFrame:
         43.6327880433471,
         43.6127835439949,
         43.6184228878598]},
-        dtype={ "nom" : str, "adr_num" : str, "adr_voie" : str, "com_cp" : str, "com_nom" : str, "tel1" : str, "freq_mnt" : str, "dermnt" : "np.date", "lat_coor1" : "float", "long_coo1" : "float"}
+        dtype={ "nom" : str, "adr_num" : str, "adr_voie" : str, "com_cp" : str, "com_nom" : str, "tel1" : str, "freq_mnt" : str, "dermnt" : "datetime64[ns]", "lat_coor1" : float, "long_coo1" : float}
     )
 
     return df
@@ -139,7 +140,7 @@ def sample_sanitized() -> pd.DataFrame:
         43.6327880433471,
         43.6127835439949,
         43.6184228878598]},
-        dtype={ "nom" : str, "adr_num" : str, "adr_voie" : str, "com_cp" : str, "com_nom" : str, "tel1" : str, "freq_mnt" : str, "dermnt" : "np.date", "lat_coor1" : "float", "long_coo1" : "float"}
+        dtype={ "nom" : str, "adr_num" : str, "adr_voie" : str, "com_cp" : str, "com_nom" : str, "tel1" : str, "freq_mnt" : str, "dermnt" : "datetime64[ns]", "lat_coor1" : float, "long_coo1" : float}
     )
     return df
 
